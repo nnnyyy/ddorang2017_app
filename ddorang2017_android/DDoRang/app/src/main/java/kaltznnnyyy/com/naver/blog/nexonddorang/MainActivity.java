@@ -1,5 +1,6 @@
 package kaltznnnyyy.com.naver.blog.nexonddorang;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -13,42 +14,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import kaltznnnyyy.com.naver.blog.nexonddorang.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ConstraintLayout layout = (ConstraintLayout)findViewById(R.id.content_main);
-        final View v = new View(getApplicationContext());
-
-        Point pt = new Point();
-        getWindowManager().getDefaultDisplay().getSize(pt);
-        v.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
-        v.setBackgroundColor(Color.RED);
-        layout.addView(v);
-        v.setVisibility(View.INVISIBLE);
-
-        final Animation animSizeUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.sizeup);
-        TextView tv = (TextView)findViewById(R.id.tv_test);
-        tv.setText(pt.toString());
-        tv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View _v, MotionEvent event) {
-                if(!animSizeUp.hasStarted() || animSizeUp.hasEnded()) {
-                    v.animate().y(_v.getY());
-                    v.setVisibility(View.VISIBLE);
-                    v.startAnimation(animSizeUp);
-                }
-                return false;
-            }
-        });
-
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(mBinding.toolbar);
         Animation animBlink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
-        tv.startAnimation(animBlink);
+        mBinding.contentMain.tvTest.startAnimation(animBlink);
     }
 
     @Override
